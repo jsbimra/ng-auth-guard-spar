@@ -5,10 +5,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "now-build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "now-build": "ng build --prod"
+    "predeploy": "npm run ng build",
+    "deploy": "gh-pages -d ng build --prod"
   },
   "private": true,
   "dependencies": {
@@ -38,6 +40,7 @@
     "@types/node": "~8.9.4",
     "bootstrap": "^4.3.1",
     "codelyzer": "~4.5.0",
+    "gh-pages": "^2.0.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.0.0",
