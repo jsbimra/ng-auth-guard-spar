@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+header {
+    margin: 60px 0;
+    text-align: center;
+}
+
+.main-nav {
+    border-style: solid;
+    border-color: rgb(212, 212, 212);
+    border-width: 1px 0;
+    & > a {
+        display: inline-block;
+        padding: 3px 10px;
+        margin: 0 10px;
+
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+}
+
+.main-content-area{
+    width: 75%;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 20px;
+}
