@@ -12,4 +12,6 @@ export class ContactComponent implements OnInit {
   ngOnInit() {
   }
 
+  title: any = "Contact";
+
 }
