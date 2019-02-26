@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { LandingComponent } from './landing/landing.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LandingComponent } from './landing/landing.component';
     HomeComponent,
     AboutComponent,
     ContactComponent,
-    LandingComponent
+    LandingComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
