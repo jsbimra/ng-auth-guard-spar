@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import {APP_BASE_HREF} from '@angular/common';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -27,7 +28,10 @@ import { LandingComponent } from './landing/landing.component';
     AppRoutingModule,
     AgGridModule.withComponents([]),
   ],
-  providers: [],
+  providers: [{
+    provide: APP_BASE_HREF,
+    useValue: '/spar-ng'
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
