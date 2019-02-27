@@ -1,7 +1,13 @@
-<nav class="main-nav">
-  <ul class="nav justify-content-right">
+<header>
+  <h1>{{ title }}</h1>
+</header>
+{{'isLoggedIn: ' }} {{isLoggedIn}}
+
+<nav class="main-nav clearfix" *ngIf="isLoggedIn ">
+  <ul class="nav justify-content-right float-left">
     <li class="nav-item"><a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a></li>
     <li class="nav-item"><a class="nav-link" routerLink="/about" routerLinkActive="active">About</a></li>
     <li class="nav-item"><a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a></li>
   </ul>
+  <a class="nav-link float-right" routerLink="/logout" routerLinkActive="active" (click)="logout()">Logout</a>
 </nav>

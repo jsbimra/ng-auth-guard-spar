@@ -1,4 +1,4 @@
-<div class="landing-wrapper container" *ngIf="isAuthUser else authFirstTemplate">
+<div class="landing-wrapper container" *ngIf="isLoggedIn else loginTemplate">
     <app-header></app-header>
 
     <div class="main-content-area">
@@ -6,14 +6,12 @@
     </div>
 </div>
 
-<ng-template #authFirstTemplate>
-    <p class="text-center">
-        <button class="btn btn-primary btn-large" (click)="authenticateSelf()">Authenticate yourself first!</button>
-    </p>
+<ng-template #loginTemplate>
+    <app-login></app-login>
 </ng-template>
 
 <ng-template #authErrorTemplate>
-    <p class="text-center error error-danger">
+    <p class="text-center text-danger">
         Sorry, you are not authorised to view this application!
     </p>
 </ng-template>

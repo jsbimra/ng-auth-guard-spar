@@ -11,13 +11,17 @@ header {
     border-style: solid;
     border-color: rgb(212, 212, 212);
     border-width: 1px 0;
-    & > a {
+    & a {
         display: inline-block;
         padding: 3px 10px;
         margin: 0 10px;
 
         text-decoration: none;
         text-transform: uppercase;
+    }
+
+    & .active {
+        color: peru;
     }
 }
 
@@ -28,6 +32,6 @@ header {
 
     h2{
         margin-bottom: 25px;
-        color: rgb(46, 156, 252);
+        color: peru;
     }
 }

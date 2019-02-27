@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent implements OnInit {
   title = "Home";
 
   constructor(private http: HttpClient) { }
 
-
   ngOnInit() {
     this.getUsersData().subscribe(
       data => {
-        console.log(data);
+        // console.log(data);
         if (data)
           this.usersData = data;
       },
       error => console.error(error),
-      () => console.log('done loading users'));
+      () => console.log('done with loading users'));
   }
 
   getUsersData() {
