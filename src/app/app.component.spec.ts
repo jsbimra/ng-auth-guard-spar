@@ -20,10 +20,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'spar-ng-test'`, () => {
+  it(`should have as title 'Fire ng app'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('spar-ng-test');
+    expect(app.title).toEqual('Fire ng app');
   });
 
   it('should render title in a h1 tag', () => {

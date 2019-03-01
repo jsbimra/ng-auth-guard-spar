@@ -4,22 +4,19 @@
   "name": "spar-ng",
   "builds": [
     {
-      "src": "package.json",
-      "use": "@now/static-build",
+      "src": "package.json", "use": "@now/static-build",
       "config": {
-        "distDir": "dist",
+        "distDir": "dist/spar-ng-test/",
         "useBuildUtils": "@now/build-utils@canary"
       }
-    }
+    },
+    { "src": "src/app/server/index.ts", "use": "@now/node-server"}
   ],
   "routes": [
-    {
-      "src": "/(.*\\..*)",
-      "dest": "/$1"
-    },
-    {
-      "src": ".*",
-      "dest": "/index.html"
-    }
+    { "src": "/", "methods": ["GET"], "dest": "/index.html"},
+    { "src": "/", "methods": ["GET"] ,"dest": "/src/app/server/index.ts" },
+    { "src": "/users", "methods": ["GET"] ,"dest": "/src/app/server/index.ts" },
+    { "src": "/login", "methods": ["POST"] ,"dest": "/src/app/server/index.ts" },
+    { "src": "/(.*\\..*)","dest": "/$1" }
   ]
 }

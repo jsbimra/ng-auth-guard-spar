@@ -8,7 +8,7 @@ import { CanActivate } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  title = 'Fire Angular Assignment!';
+  title = 'Fire Angular App!';
   isLoggedIn: any;
 
   constructor(private auth: AuthService) {
