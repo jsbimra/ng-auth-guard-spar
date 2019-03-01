@@ -11,8 +11,7 @@ export class HeaderComponent {
   title = 'Fire Angular App!';
   isLoggedIn: any;
 
-  constructor(private auth: AuthService) {
-    console.log('isLoggedIn LS: ',typeof JSON.parse(localStorage.getItem('isLoggedIn')));
+  constructor(public auth: AuthService) {
     this.isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
   }
 
