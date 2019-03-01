@@ -10,13 +10,15 @@
         "useBuildUtils": "@now/build-utils@canary"
       }
     },
-    { "src": "src/app/server/index.ts", "use": "@now/node-server"}
+    { "src": "./src/app/**/*.ts", "use": "@now/node"}
   ],
   "routes": [
-    { "src": "/", "methods": ["GET"], "dest": "/index.html"},
-    { "src": "/", "methods": ["GET"] ,"dest": "/src/app/server/index.ts" },
+    
+    { "src": "/api/(.*)", "dest": "/src/app/server/$1" },
+    { "src": "/", "methods": ["GET"] ,"dest": "/src/app/server/$1" },
     { "src": "/users", "methods": ["GET"] ,"dest": "/src/app/server/index.ts" },
     { "src": "/login", "methods": ["POST"] ,"dest": "/src/app/server/index.ts" },
-    { "src": "/(.*\\..*)","dest": "/$1" }
+    { "src": "/(.*)", "methods": ["GET"], "dest": "/index.html"}
   ]
 }
+
