@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 // import {APP_BASE_HREF} from '@angular/common';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { AgGridModule } from 'ag-grid-angular';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +20,15 @@ import { LoginComponent } from './login/login.component';
 import { AuthService } from './auth/auth.service';
 import { LoginService } from './login.service';
 import { AuthGuardService } from './auth/auth-guard.service';
+import { AdminComponent } from './admin/admin.component';
+// import { AuthInterceptorService } from './auth/auth-interceptor.service';
+
+/*
+If we are using JwtModule authorization token would be passed along with every 
+http request, hence no need of using interceptor in this case.
+If we need to set other things with every request we can take a use of interceptor for sure!
+*/
+export const tokenGetter = () => localStorage.getItem('token');
 
 @NgModule({
   declarations: [
@@ -28,7 +38,8 @@ import { AuthGuardService } from './auth/auth-guard.service';
     ContactComponent,
     LandingComponent,
     HeaderComponent,
-    LoginComponent
+    LoginComponent,
+    AdminComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -36,8 +47,16 @@ import { AuthGuardService } from './auth/auth-guard.service';
     HttpClientModule,
     AppRoutingModule,
     AgGridModule.withComponents([]),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter,
+        whitelistedDomains: ['localhost:4200'],
+        blacklistedRoutes: ['/api/login']
+      }
+    })
   ],
   providers: [
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },
     AuthGuardService,
     AuthService,
     LoginService

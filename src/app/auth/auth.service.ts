@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-// import { JwtHelperService } from '@auth0/angular-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
@@ -8,19 +8,21 @@ import * as moment from 'moment';
 @Injectable()
 export class AuthService {
 
-    public loggedIn: Subject<boolean> = new Subject<boolean>();
-
-    // make isLoggedIn public readonly
     get isLoggedIn() {
-        return this.loggedIn.asObservable();
-    }
-    constructor(private http: HttpClient) {
-        this.loggedIn.next(false);
+        return this.isAuthenticated();
     }
 
-    public login(username: string, password: string): Observable<boolean> {
+    constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
+    }
 
-        return this.http.post<{ token: string, expiresIn:any }>('api/login', { username: username, password: password })
+    isAuthenticated(): boolean {
+        const token = localStorage.getItem('token');
+        return !this.jwtHelper.isTokenExpired(token);
+    }
+
+    login(username: string, password: string): Observable<boolean> {
+
+        return this.http.post<{ token: string, expiresIn: any }>('api/login', { username: username, password: password })
             .pipe(
                 map(result => {
                     //set token here: 
@@ -28,26 +30,29 @@ export class AuthService {
                     const expiresAt = moment().add(result.expiresIn, 'second');
                     localStorage.setItem('token', result.token);
                     localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
-                    localStorage.setItem("isLoggedIn", "true");
 
-                    //this.set loggedIn
-                    // this.loggedIn.next(true);
                     return true;
                 })
             )
     }
 
-    public logout() {
-        console.log('Logout invoked auth service ');
-        this.loggedIn.next(false);
+    logout() {
         localStorage.removeItem("token");
         localStorage.removeItem("expires_at");
-        localStorage.removeItem("isLoggedIn");
     }
 
-    public isAuthenticated(): boolean {
-        const token = localStorage.getItem('token');
-        return token ? true : false;
-        // return !this.jwtHelper.isTokenExpired(token);
+    testSecretApiLogic() {
+        console.log('test Secret api logic  called');
+        // this.http.get('api/secretTest')
+        this.http.get('api/users')
+            .subscribe(
+                result => {
+                    console.log(result);
+                    // return true;
+                },
+
+                err => console.error(err),
+                () => console.log('secretTestLogic promise completed')
+            )
     }
 }

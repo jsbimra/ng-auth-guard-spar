@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuardService as AuthGuard } from './auth/auth-guard.service';
+import { RoleGuardService as RoleGuard } from './auth/role-guard.service';
 
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: '/landing', pathMatch: 'full' },
@@ -15,16 +17,23 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: 'home', component: HomeComponent,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'about', component: AboutComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
 
   },
   {
     path: 'contact', component: ContactComponent,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin', component: AdminComponent,
+    canActivate: [RoleGuard],
+    data: {
+      userRole: 'admin'
+    }
   },
   { path: '**', redirectTo: '' },
 ];

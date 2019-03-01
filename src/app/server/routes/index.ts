@@ -1,5 +1,5 @@
 
-export default const routes = express.Router();
+export const routes = express.Router();
 
 routes.get('/', (req, res) => res.send({ hello: 'world' }));
 routes.get('/home', (req, res) => res.send(['love', 'love', 'love']));

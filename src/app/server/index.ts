@@ -1,59 +1,88 @@
-
-// import express from 'express';
-// import jwt from 'jsonwebtoken';
-
-// equivalent of older: const express = require('express')
-// import * as express from 'express';
+//express related
 const express = require("express");
+const bodyparser = require('body-parser');
+const path = require("path");
 const fs = require('fs');
 
-const _ = require("lodash");
-const bodyparser = require('body-parser');
-const jwt = require('jsonwebtoken');
-
+//Token related
 const expressJwt = require('express-jwt');
+const jwt = require('jsonwebtoken');
+const jwksRsa = require('jwks-rsa');
 
-//Default needs
-const users = [
-    {
-        id: 1,
-        name: 'admin',
-        password: 'admin'
-    },
-    {
-        id: 2,
-        name: 'jat',
-        password: 'jat'
-    },
-    {
-        id: 3,
-        name: 'morrie',
-        password: 'morrie'
-    }
-];
+//Common
+const _ = require("lodash");
 
 
-//Express code start 
+//App start 
 const app = express();
 const port = 3000;
 const routes = express.Router();
 
-routes.get('/', (req, res) => res.send({ hello: 'world' }));
+//Normalizing the path for windows environment
+var normalPath = path.normalize(__dirname);
 
-let validUser = false;
+//Keys
+const RSA_PRIVATE_KEY = fs.readFileSync(normalPath + '/private.pem', 'utf8');
+const RSA_PUBLIC_KEY = fs.readFileSync(normalPath + '/public.pem', 'utf8');
 
-//HANDLE LOGIN GET AND POST REQUEST 
-routes.get('/checkuser', (req, res) => {
-    console.log('SERVER:Login GET request object', req.body);
-    users.map(user => {
-        if (user.name === req.body.username) {
-            res.send({ valid: true, id: user.id, status: 'Valid user!' });
-        }
-        else {
-            res.send({ valid: false, status: 'GET: Wrong user!' });
-        }
-    });
-});
+// Handle POST requests that come in formatted as JSON
+app.use(express.json());
+
+// Put after the express.json() call
+app.use('/', routes);
+
+//not working due to: need to set right key path in format
+// const checkIfAuthenticated = expressJwt({
+//     secret: jwksRsa.expressJwtSecret({
+//         cache: true,
+//         rateLimit: true,
+//         jwksUri: "https://angularuniv-security-course.auth0.com/.well-known/jwks.json"
+//     }),
+//     algorithms: ['RS256']
+// });
+
+const checkIfAuthenticated = expressJwt({
+    secret: RSA_PUBLIC_KEY
+}); 
+
+//Dummy users
+const users = [
+    {
+        id: 1,
+        name: 'admin',
+        password: 'admin',
+        role: 'admin'
+    },
+    {
+        id: 2,
+        name: 'jat',
+        password: 'jat',
+        role: 'user'
+    },
+    {
+        id: 3,
+        name: 'india',
+        password: 'india',
+        role: 'user'
+    }
+];
+
+const readAllUsers = (req, res) => res.json(['All users arrays object to return ']);
+
+//Routes
+routes.get('/', (req, res) => res.send({ hello: 'api is up and running!' }));
+
+routes.get('/users', checkIfAuthenticated, readAllUsers);
+
+routes.get('/secretTest', checkIfAuthenticated,
+    (req, res) => {
+        console.log('reached to secret test API');
+        res.status(200).json({
+            message: 'secret tested out successfully!'
+        })
+    },
+    err => console.error(new Error('secret issue ' + err))
+);
 
 routes.post('/login', (req, res) => {
     console.log('SERVER:Login POST request object', req.body);
@@ -71,13 +100,17 @@ routes.post('/login', (req, res) => {
     }
 
     if (req.body.password === user.password) {
-        const payload =  {id: user.id, token: "dummytokenvalue"};
-        const token = 'GENERATE_TOKEN_HERE_WITH_PRIVATE_KEY_AND_WITH_SIGN_OPTION';
+        console.log(' userId ', user.id);
 
-        res.json({
+        const jwtBearerToken = jwt.sign({ role: user.role }, RSA_PRIVATE_KEY, {
+            algorithm: "RS256",
+            expiresIn: 180,
+        });
+
+        res.status(200).json({
             message: 'ok',
-            token,
-            expiresIn: 'setjwtexpiretime'
+            token: jwtBearerToken,
+            expiresIn: jwt.decode(jwtBearerToken).exp
         });
 
     } else {
@@ -85,23 +118,7 @@ routes.post('/login', (req, res) => {
     }
 });
 
-// Handle POST requests that come in formatted as JSON
-app.use(express.json());
-
-// Put after the express.json() call
-app.use('/', routes);
-
-// start our server on port 4201
+// start our server on port 3000
 app.listen(port, 'localhost', function () {
     console.log(`Server now listening on: ${port}`);
 });
-
-// const app = express();
-
-// //fisrt get resquest 
-// app.get('/home', (req, res) => {
-//     res.send('Hello user, welcome to my app world!');
-// });
-
-
-// app.listen(port, () => console.log(`Your application is listening on port ${port}`));

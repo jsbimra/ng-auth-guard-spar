@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth/auth.service';
 // import { Observable } from 'rxjs';
 
 @Component({
@@ -12,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
 export class HomeComponent implements OnInit {
   title = "Home";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   ngOnInit() {
     this.getUsersData().subscribe(
@@ -47,4 +48,10 @@ export class HomeComponent implements OnInit {
     }
   ];
 
+  testSecretApi() {
+    console.info('Test secret API logic');
+
+    this.auth.testSecretApiLogic();
+
+  }
 }
