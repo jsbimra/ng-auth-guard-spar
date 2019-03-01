@@ -10,7 +10,7 @@
         "useBuildUtils": "@now/build-utils@canary"
       }
     },
-    { "src": "./src/app/**/*.ts", "use": "@now/node"}
+    { "src": "./src/app/server/*.ts", "use": "@now/node"}
   ],
   "routes": [
     
