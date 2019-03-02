@@ -16,12 +16,11 @@
     { "src": "./src/app/server/*.ts", "use": "@now/node@0.4.28-canary.6"}
   ],
   "routes": [
-    
-    { "src": "/api/(.*)", "dest": "/src/app/server/$1" },
-    { "src": "/", "methods": ["GET"] ,"dest": "/dist/$1" },
     { "src": "/users", "methods": ["GET"] ,"dest": "/src/app/server/index.ts" },
     { "src": "/login", "methods": ["POST"] ,"dest": "/src/app/server/index.ts" },
-    { "src": "/(.*)", "methods": ["GET"], "dest": "*/index.html"}
+    { "src": "/api/(.*)", "dest": "/src/app/server/$1" },
+    { "src": "/", "methods": ["GET"] ,"dest": "/$1" },
+    { "src": "/(.*)", "methods": ["GET"], "dest": "index.html"}
   ]
 }
 
