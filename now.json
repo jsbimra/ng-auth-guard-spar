@@ -8,13 +8,12 @@
   },
   "builds": [
     {
-      "src": "package.json", "use": "@now/static-build",
+      "src": "package.json", "use": "@now/static-build", 
       "config": {
-        "distDir": "dist/",
-        "useBuildUtils": "@now/build-utils@canary"
+        "distDir": "dist"
       }
     },
-    { "src": "./src/app/server/*.ts", "use": "@now/node"}
+    { "src": "./src/app/server/*.ts", "use": "@now/node@0.4.28-canary.6"}
   ],
   "routes": [
     
